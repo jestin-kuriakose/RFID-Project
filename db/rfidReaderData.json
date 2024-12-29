@@ -1,0 +1,13 @@
+{
+  "timestamp": "2024-12-16T19: 29: 51.640Z",
+  "deviceName": "Zebra TC52",
+  "rfidReaderStatus": "Disconnected",
+  "rfidInfo": [
+    "RFID1",
+    "RFD40P_22071520101176",
+    "48:A4: 93:AA: 6F: 26"
+  ],
+  "additionalInfo": "No issues detected",
+  "type": "status",
+  "location": "loading_bay"
+}

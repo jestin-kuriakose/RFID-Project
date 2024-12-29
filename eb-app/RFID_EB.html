@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airport Luggage Tracking System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    button {
+      background-color: #4caf50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    #display,
+    #serverResponse,
+    #logDisplay {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    #display {
+      margin-top: 100px;
+    }
+
+    #logDisplay {
+      height: 200px;
+      overflow-y: auto;
+    }
+
+    #trigger {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #controls {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    input[type="text"],
+    input[type="range"] {
+      margin: 10px 0;
+    }
+
+    .slider {
+      width: 100%;
+    }
+
+    #tagInfo,
+    #passengerInfo {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    #serverConfig {
+      max-width: 400px;
+      margin: 0 auto 20px;
+    }
+
+    .input-group {
+      display: flex;
+    }
+
+    .form-control {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ced4da;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .btn-primary {
+      padding: 10px 15px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border: 1px solid #007bff;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .passenger-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 20px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .passenger-card h2 {
+      color: #333;
+      border-bottom: 2px solid #4caf50;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .passenger-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .info-item {
+      margin-bottom: 10px;
+    }
+
+    .info-label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .info-value {
+      color: #333;
+    }
+
+    .flight-info {
+      background-color: #f0f8ff;
+      border-left: 4px solid #4caf50;
+      padding: 10px;
+      margin-top: 15px;
+    }
+
+    .default-message {
+      text-align: center;
+      color: #777;
+      font-style: italic;
+    }
+
+    #connectionStatus {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-connected {
+      background-color: green;
+    }
+
+    .status-disconnected {
+      background-color: red;
+    }
+
+    .status-unknown {
+      background-color: gray;
+    }
+  </style>
+  <script type="text/javascript" charset="utf-8" src="elements.js"></script>
+  <script type="text/javascript" charset="utf-8" src="ebapi-modules.js"></script>
+  <script type="text/javascript">
+    var displayStr = "";
+    var tagCount = 0;
+    var readstate = false;
+    var triggervalue;
+    var lasttag = 0;
+    var scanning = false;
+    var tstate = false;
+    var istate = false;
+    var clocate = false;
+    var prefilter;
+    var socket;
+    var rfidDevices;
+    var connectionStatus = "Disconnected"
+
+    let serverIp = localStorage.getItem("RFID_API_URL") || "192.168.1.134"; // Default IP
+
+    function initializeServerIpInput() {
+      document.getElementById("serverIpInput").value = serverIp;
+      checkServerConnection();
+    }
+
+    function saveServerIp() {
+      const newIp = document.getElementById("serverIpInput").value.trim();
+      if (newIp) {
+        serverIp = newIp;
+        localStorage.setItem("RFID_API_URL", serverIp);
+        writeLog(`Server IP updated to: ${serverIp}`);
+        if (socket) {
+          socket.close();
+        }
+        initWebSocket();
+        checkServerConnection();
+      } else {
+        writeLog("Please enter a valid IP address");
+      }
+    }
+
+    function checkServerConnection() {
+      const statusIndicator = document.getElementById("connectionStatus");
+      statusIndicator.className = "status-unknown";
+
+      fetch(getServerUrl("/api/status"))
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "OK") {
+            statusIndicator.className = "status-connected";
+          } else {
+            statusIndicator.className = "status-disconnected";
+          }
+        })
+        .catch(error => {
+          statusIndicator.className = "status-disconnected";
+          writeLog(`Error checking server status: ${error}`);
+        });
+    }
+
+    function getServerUrl(path) {
+      return `http://${serverIp}:3001${path}`;
+    }
+
+    function getWebSocketUrl() {
+      return `ws://${serverIp}:8091`;
+    }
+
+
+    function initWebSocket() {
+      socket = new WebSocket(getWebSocketUrl());
+
+      socket.onopen = function (event) {
+        writeLog('WebSocket connection established');
+        startStatusUpdates(); // Start sending periodic status updates
+      };
+
+      socket.onmessage = function (event) {
+        writeLog('Received message from server: ' + event.data);
+        // Handle incoming messages from the server
+      };
+
+      socket.onclose = function (event) {
+        writeLog('WebSocket connection closed');
+        // Attempt to reconnect after a delay
+        setTimeout(initWebSocket, 5000);
+      };
+
+      socket.onerror = function (error) {
+        writeLog('WebSocket error: ' + error.message);
+      };
+    }
+
+    function writeLog(message) {
+      const logDisplay = document.getElementById("logDisplay");
+      const logEntry = document.createElement("p");
+      logEntry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+      logDisplay.appendChild(logEntry);
+      logDisplay.scrollTop = logDisplay.scrollHeight;
+    }
+
+    let statusInterval;
+
+    function startStatusUpdates() {
+      if (statusInterval) return; // Avoid multiple intervals
+
+      statusInterval = setInterval(() => {
+        const deviceStatus = getDeviceStatus();
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify(deviceStatus));
+          // writeLog(`Sent device status to server: ${JSON.stringify(deviceStatus)}`);
+        } else {
+          writeLog('WebSocket is not open. Unable to send device status.');
+        }
+      }, 5000); // Send every 5 seconds
+    }
+
+    function stopStatusUpdates() {
+      if (statusInterval) {
+        clearInterval(statusInterval);
+        statusInterval = null;
+        writeLog('Stopped sending device status updates.');
+      }
+    }
+
+    function getDeviceStatus() {
+      const status = {
+        timestamp: new Date().toISOString(),
+        deviceName: "Zebra TC52",
+        rfidReaderStatus: connectionStatus,
+        rfidInfo: rfidDevices || {},
+        additionalInfo: "No issues detected",
+        type: "status"
+      };
+
+      return status
+    }
+
+    function sendStatusUpdate(status) {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(status));
+        writeLog(`Sent device status to server: ${JSON.stringify(status)}`);
+      } else {
+        writeLog('WebSocket is not open. Unable to send device status.');
+      }
+    }
+
+    function rfidEnumerate() {
+      writeLog("Enumerating RFID devices...");
+      rfid.transport = "bluetooth";
+      rfid.enumRFIDEvent = "EnumRfid(%s);";
+      rfid.enumerate();
+    }
+
+    function EnumRfid(rfidArray) {
+      var rfidInfo = "RFID On Device: " + rfidArray.length + "--";
+      for (i = 0; i < rfidArray.length; i++) {
+        rfidDevices = rfidArray[i]
+        rfidInfo +=
+          "ID:" +
+          rfidArray[i][0] +
+          "\nname:" +
+          rfidArray[i][1] +
+          "\naddress " +
+          rfidArray[i][2];
+      }
+      writeLog(rfidInfo);
+      document.getElementById("display").innerHTML = rfidInfo;
+    }
+
+    function rfidConnect() {
+      writeLog("Connecting to RFID reader...");
+      rfid.readerID = "RFID1";
+      rfid.connect();
+      rfid.reportUniqueTags = 1;
+      rfid.beepOnRead = 0;
+      rfid.stopTriggerType = "triggerRelease";
+      // rfid.tagMemBank = "EPC";
+      // rfid.tagReadSize = 8; // Read 8 bytes (64 bits) of TID data
+      // rfid.enableTagMemoryBankData = true;
+      rfid.tagMemBank = "Reserved";
+      rfid.tagReadSize = 4;
+      rfid.tagRead();
+    }
+
+    function rfidDisConnect() {
+      writeLog("Disconnecting from RFID reader...");
+      rfid.disconnect();
+    }
+
+    function TagHandler(tagarray) {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(tagarray));
+      }
+      for (let i = 0; i < tagarray.TagData.length; i++) {
+        var tagId = tagarray.TagData[i].tagID;
+        var tidData = tagarray.TagData[i].memoryBankData;
+
+        if (!tagId.startsWith("102030405060")) return
+
+        sendToServer({ tagID: tagId });
+
+        writeLog(`TID Data received: ${tidData}`);
+        document.getElementById("tagInfo").innerHTML =
+          "Scanned TID: " + tidData + "<br>" + "Tag ID: " + tagId;
+        displayTagDetails(tagarray.TagData[i]);
+      }
+    }
+
+    function displayTagDetails(tagData) {
+      let details = Object.entries(tagData)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join("<br>");
+      document.getElementById("display").innerHTML = details;
+    }
+
+    function statusEvent(eventInfo) {
+      writeLog(`Status event: ${eventInfo.vendorMessage}`);
+      if (eventInfo.vendorMessage == "INVENTORY_STOP_EVENT") {
+        displayStr = "";
+        tagCount = 0;
+      } else {
+        if (eventInfo.vendorMessage.startsWith("CONNECT")) {
+          connectionStatus = "Connected"
+          document.getElementById("trigger").innerHTML =
+            '<p style="color:green;">Connection Status:<b> CONNECTED</b></p>';
+        }
+
+        else if (eventInfo.vendorMessage.startsWith("DISCONNECT")) {
+          connectionStatus = "Disconnected"
+          document.getElementById("trigger").innerHTML =
+            '<p style="color:red;">Connection Status:<b> DISCONNECTED</b></p>';
+          document.getElementById("display").innerHTML = "";
+        } else if (eventInfo.vendorMessage.startsWith("Reader"))
+          document.getElementById("trigger").innerHTML =
+            '<p style="color:orange;">Connection Status:<b> ' +
+            eventInfo.vendorMessage +
+            "</b></p>";
+        if (
+          eventInfo.vendorMessage.startsWith("HANDHELD_TRIGGER") &&
+          scanning == true
+        ) {
+          if (tstate == true) {
+            tstate = false;
+          } else {
+            tstate = true;
+          }
+        }
+      }
+    }
+
+    function startIntentListener() {
+      writeLog("Starting intent listener...");
+      rfid.statusEvent = "statusEvent(%json)";
+      rfid.tagEvent = "TagHandler(%json)";
+      rfid.enableTagRSSI = true;
+      rfid.enableTagMemoryBankData = true;
+      // rfid.tagMemBank = "User";
+      // rfid.tagReadSize = 4;
+      rfid.tagMemBank = "Reserved";
+      rfid.tagReadSize = 4;
+      rfid.tagRead();
+      rfidEnumerate();
+      rfidDisConnect();
+      setTimeout(rfidConnect, 2000);
+      initWebSocket();
+      initializeServerIpInput();
+      checkServerConnection();
+    }
+
+    function startConnectionCheck() {
+      setInterval(checkServerConnection, 30000); // Check every 30 seconds
+    }
+
+    function checkPassengerInfo(tagId) {
+      writeLog(`Checking passenger info for tag ID: ${tagId}`);
+      fetch(getServerUrl(`/passenger-info?tagId=${tagId}`))
+        .then((response) => response.json())
+        .then((data) => {
+          writeLog("Passenger info received: " + JSON.stringify(data));
+          if (data.passenger) {
+            document.getElementById("passengerInfo").innerHTML =
+              "Passenger: " +
+              data.passenger.name +
+              "<br>" +
+              "Flight: " +
+              data.passenger.flight;
+          } else {
+            document.getElementById("passengerInfo").innerHTML =
+              "No passenger assigned to this tag.";
+          }
+        })
+        .catch((error) => {
+          writeLog("Error: " + error);
+          // document.getElementById("error").innerText =
+          //   "Error fetching passenger info";
+        });
+    }
+
+    function checkPassengerInfo(tagId) {
+      writeLog(`Checking`);
+      writeLog(`Checking passenger info for tag ID: ${tagId}`);
+      document.getElementById("display").innerHTML = "";
+      fetch(getServerUrl(`/passenger-info?tagId=${tagId}`))
+        .then((response) => response.json())
+        .then((data) => {
+          writeLog("Passenger info received: " + JSON.stringify(data));
+          if (data.passenger) {
+            displayStr +=
+              "<br>" +
+              "Scanned Tag ID: " +
+              tagId +
+              "<br>" +
+              "Passenger: " +
+              data.passenger.firstName +
+              data.passenger.lastName +
+              "<br>" +
+              "Flight: " +
+              data.passenger.flightNumber;
+            document.getElementById("display").innerHTML = displayStr;
+          } else {
+            displayStr +=
+              "<br>" +
+              "Scanned Tag ID: " +
+              tagId +
+              "<br>" +
+              "No passenger assigned to this tag.";
+            document.getElementById("display").innerHTML = displayStr;
+          }
+        })
+        .catch((error) => {
+          writeLog("Error: " + error);
+          // document.getElementById("error").innerText =
+          //   "Error fetching passenger info";
+        });
+    }
+
+    function sendToServer(tagData) {
+      writeLog(`Sending tag data to server: ${JSON.stringify(tagData)}`);
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(tagData));
+      } else {
+        writeLog('WebSocket is not open. Unable to send data.');
+      }
+      fetch(getServerUrl("/scanned-rfid"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tagData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.passengerFound) {
+            displayPassengerInfo(data.foundPassenger);
+          } else {
+            document.getElementById("passengerDetails").innerHTML = "<p>No passenger found for this tag.</p>";
+          }
+        })
+        .catch((error) => {
+          writeLog(`Error sending data to server: ${error}`);
+          document.getElementById("passengerDetails").innerHTML = "<p class='default-message'>Scan an RFID tag to get passenger info.</p>";
+        });
+    }
+
+    function displayPassengerInfo(passenger) {
+      const passengerDetails = document.getElementById("passengerDetails");
+      if (!passenger) {
+        passengerDetails.innerHTML = "<p class='default-message'>Scan an RFID tag to get passenger info.</p>";
+        return;
+      }
+      passengerDetails.innerHTML = `
+    <div class="passenger-info">
+      <div class="info-item">
+        <span class="info-label">Name:</span>
+        <span class="info-value">${passenger.firstName} ${passenger.lastName}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Email:</span>
+        <span class="info-value">${passenger.email}</span>
+      </div>
+    </div>
+    <div class="flight-info">
+      <div class="info-item">
+        <span class="info-label">Flight:</span>
+        <span class="info-value">${passenger.flightNumber}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">From:</span>
+        <span class="info-value">${passenger.departureLocation}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">To:</span>
+        <span class="info-value">${passenger.arrivalLocation}</span>
+      </div>
+    </div>
+  `;
+    }
+  </script>
+</head>
+
+<body onload="startIntentListener()">
+  <h1>Airport Luggage Tracking System</h1>
+  <div id="serverConfig" class="mb-3">
+    <div class="input-group">
+      <input type="text" id="serverIpInput" class="form-control" placeholder="Enter server IP address"
+        aria-label="Server IP Address">
+      <button class="btn btn-primary" type="button" onclick="saveServerIp()">Save IP</button>
+      <div id="connectionStatus" class="ms-2 mt-2"></div>
+    </div>
+  </div>
+
+
+  <div id="controls">
+    <button onclick="rfidConnect()">Connect RFID</button>
+    <button onclick="rfidDisConnect()">Disconnect RFID</button>
+  </div>
+  <div id="trigger"></div>
+  <div id="passengerInfo" class="passenger-card">
+    <h2>Passenger Information</h2>
+    <div id="passengerDetails">
+      <p class="default-message">Scan an RFID tag to get passenger info.</p>
+    </div>
+  </div>
+
+  <div id="display">RFID Data:</div>
+  <div id="tagInfo">Scanned Tag ID:</div>
+  <div id="logDisplay"></div>
+</body>
+
+</html>

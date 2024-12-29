@@ -1,0 +1,36 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.sidebar-wrapper {
+  position: fixed;
+  top: 56px; /* Adjust this value to match your topbar's height */
+  left: 0;
+  bottom: 0;
+  width: 16.666667%; /* 2 columns of 12 */
+  overflow-y:hidden;
+}
+
+.main-content {
+  margin-left: 16.666667%; /* Match sidebar width */
+  margin-top: 56px; /* Match topbar height */
+  padding: 20px;
+  height: calc(100vh - 56px); /* Viewport height minus topbar height */
+  overflow-y: auto;
+}

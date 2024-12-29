@@ -1,0 +1,519 @@
+[
+  {
+    "id": "d4af8adc-6d8e-4d3f-aafa-9493b4a0d7d4",
+    "firstName": "Jestin",
+    "lastName": "Kuriakose",
+    "email": "jestin@live.com",
+    "flightNumber": "TY549",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060000000000000",
+    "scanLogs": []
+  },
+  {
+    "id": "949718d3-f7a8-481d-a851-c83c7925eab3",
+    "firstName": "Helen",
+    "lastName": "Jacob",
+    "email": "helen@gmail.com",
+    "flightNumber": "GU283",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060969548972394",
+    "scanLogs": []
+  },
+  {
+    "id": "73e02ae4-3edc-4954-b020-608864c4c299",
+    "firstName": "Hagin",
+    "lastName": "Jacob",
+    "email": "hagin@gmail.com",
+    "flightNumber": "GU283",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060822641577266",
+    "scanLogs": [
+      {
+        "location": "departure_gate",
+        "timestamp": "2024-12-19T07:24:25.125Z"
+      },
+      {
+        "location": "departure_gate",
+        "timestamp": "2024-12-19T07:43:17.815Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:46.426Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:55.592Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:59.584Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:12:30.648Z"
+      }
+    ]
+  },
+  {
+    "id": "b51d991a-b241-4bfc-b793-708d6ae5d0d4",
+    "firstName": "Anu",
+    "lastName": "Kuriakose",
+    "email": "anu@gmail.com",
+    "flightNumber": "TY549",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060740942215826",
+    "scanLogs": [
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:46.460Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:50.450Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:12:00.908Z"
+      }
+    ]
+  },
+  {
+    "id": "4765f70a-b56a-4a79-8021-0abff8fea9fc",
+    "firstName": "Abraham",
+    "lastName": "Kuriakose",
+    "email": "abraham@gmail.com",
+    "flightNumber": "GU283",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060274412468354",
+    "scanLogs": [
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-16T22:14:05.898Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-16T22:14:17.196Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:49.565Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:55.563Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:59.553Z"
+      }
+    ]
+  },
+  {
+    "id": "89bdf8ba-cd0b-4917-847a-d3e39fa0746f",
+    "firstName": "Nate",
+    "lastName": "Johnson",
+    "email": "nate@gmail.com",
+    "flightNumber": "GU283",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060607394151805",
+    "scanLogs": [
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:46.439Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:55.583Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:59.540Z"
+      }
+    ]
+  },
+  {
+    "id": "4b76a04f-31dd-402b-9f5a-1253fb53fea6",
+    "firstName": "Janet",
+    "lastName": "Parish",
+    "email": "janet@gmail.com",
+    "flightNumber": "TY549",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060614635594225",
+    "scanLogs": [
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-16T22:21:20.956Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:30:22.742Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:30:44.245Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:08:27.859Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:46.448Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:59.590Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:12:30.667Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:12:34.475Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T06:15:28.482Z"
+      }
+    ]
+  },
+  {
+    "id": "cddaad42-e8cf-4d92-8b59-8159ee632155",
+    "firstName": "Matthias",
+    "lastName": "Jacob",
+    "email": "matthias@gmail.com",
+    "flightNumber": "TQ202",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060771193129162",
+    "scanLogs": [
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:30:22.726Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:30:44.257Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:08:27.880Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:46.552Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:59.451Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:23:19.760Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:23:41.603Z"
+      }
+    ]
+  },
+  {
+    "id": "53d8b215-3401-4b3a-bbaf-6bbc79d2829e",
+    "firstName": "DJ",
+    "lastName": "Khalid",
+    "email": "khalid@gmail.com",
+    "flightNumber": "TY549",
+    "departureLocation": "YYT",
+    "arrivalLocation": "TTZ",
+    "rfidTag": "102030405060943020637081",
+    "scanLogs": [
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:30:22.735Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:08:27.932Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:46.604Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:11:59.598Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:12:00.886Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:12:35.843Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:17:48.862Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:18:04.883Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:19:31.091Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:19:49.341Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:20:14.130Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:20:29.954Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:20:42.827Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:21:59.083Z"
+      }
+    ]
+  },
+  {
+    "id": "da28a768-785d-43e0-8acd-64d3b433ec88",
+    "firstName": "Lance",
+    "lastName": "Quadros",
+    "email": "lance@outlook.com",
+    "flightNumber": "EK105",
+    "departureLocation": "DXB",
+    "arrivalLocation": "BOM",
+    "rfidTag": "102030405060012500404545",
+    "scanLogs": [
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:30:44.226Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:31:07.975Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:31:28.199Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:33:08.746Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:33:35.064Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:39:33.141Z"
+      }
+    ]
+  },
+  {
+    "id": "d9b95e4d-61b0-4e9e-9335-6ea8bce590bc",
+    "firstName": "Tony ",
+    "lastName": "Abi Daoud",
+    "email": "Tony@live.com",
+    "flightNumber": "AI903",
+    "departureLocation": "SHJ",
+    "arrivalLocation": "DEL",
+    "rfidTag": "102030405060601759178165",
+    "scanLogs": [
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:49:12.707Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:49:21.715Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:49:34.508Z"
+      },
+      {
+        "location": "loading-bay-2",
+        "timestamp": "2024-12-18T09:49:37.207Z"
+      }
+    ]
+  },
+  {
+    "id": "f6017020-c2bc-44f6-ac29-70a60caac419",
+    "firstName": "Harry",
+    "lastName": "Kane",
+    "email": "harry@gmail.com",
+    "flightNumber": "TY549",
+    "departureLocation": "YYT",
+    "arrivalLocation": "DEL",
+    "rfidTag": "102030405060970194661375",
+    "scanLogs": [
+      {
+        "location": "departure_gate",
+        "timestamp": "2024-12-19T08:01:24.425Z"
+      },
+      {
+        "location": "departure_gate",
+        "timestamp": "2024-12-19T08:01:48.705Z"
+      },
+      {
+        "location": "security_checkpoint",
+        "timestamp": "2024-12-19T08:02:14.355Z"
+      },
+      {
+        "location": "security_checkpoint",
+        "timestamp": "2024-12-19T08:02:18.689Z"
+      },
+      {
+        "location": "security_checkpoint",
+        "timestamp": "2024-12-19T08:02:26.298Z"
+      },
+      {
+        "location": "security_checkpoint",
+        "timestamp": "2024-12-19T08:02:34.527Z"
+      },
+      {
+        "location": "security_checkpoint",
+        "timestamp": "2024-12-19T08:10:37.712Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T08:11:31.255Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T08:11:40.647Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T08:11:49.365Z"
+      }
+    ]
+  },
+  {
+    "id": "263b15c0-4d00-4ab7-8d50-1da8ed783439",
+    "firstName": "sKIBIDI",
+    "lastName": "vijay",
+    "email": "vijay@gmailoutlook.cim",
+    "flightNumber": "kk123",
+    "departureLocation": "dom",
+    "arrivalLocation": "bom",
+    "rfidTag": "102030405060762820883711",
+    "scanLogs": [
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:25:32.958Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:25:44.390Z"
+      }
+    ]
+  },
+  {
+    "id": "97ae7bf5-65d0-4774-a111-1966a48817aa",
+    "firstName": "Ashvinthan",
+    "lastName": "Vasudevan",
+    "email": "Ashvinthan@outlook.com",
+    "flightNumber": "EK106",
+    "departureLocation": "DXB",
+    "arrivalLocation": "MEL",
+    "rfidTag": "102030405060191303787546",
+    "scanLogs": []
+  },
+  {
+    "id": "309483c5-4ef6-4c53-9124-03ffe5dd513a",
+    "firstName": "Ashvinthan",
+    "lastName": "Vasudevan",
+    "email": "Ashvintha@gmail.com",
+    "flightNumber": "EK108",
+    "departureLocation": "DXB",
+    "arrivalLocation": "MEL",
+    "rfidTag": "102030405060465852916108",
+    "scanLogs": [
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:44:01.128Z"
+      },
+      {
+        "location": "baggage_claim",
+        "timestamp": "2024-12-19T09:45:47.503Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-19T09:46:12.023Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-19T09:46:26.395Z"
+      }
+    ]
+  },
+  {
+    "id": "11e2375f-eb6a-463c-8af4-39c546b0aa7f",
+    "firstName": "Aditya ",
+    "lastName": "Petwal",
+    "email": "Aditya123@gmail.com",
+    "flightNumber": "G9442",
+    "departureLocation": "SHJ",
+    "arrivalLocation": "TRV",
+    "rfidTag": "102030405060349715875526",
+    "scanLogs": [
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T06:15:28.456Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T06:15:47.494Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T06:15:48.930Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T06:16:01.805Z"
+      }
+    ]
+  },
+  {
+    "id": "bdd2203d-1211-4df9-bddf-36a8fa07c032",
+    "firstName": "UZAIR",
+    "lastName": "ATTIQUE",
+    "email": "Lnce1@outlook.com",
+    "flightNumber": "EK100",
+    "departureLocation": "DXB",
+    "arrivalLocation": "MEL",
+    "rfidTag": "102030405060373205610080",
+    "scanLogs": [
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T07:04:45.056Z"
+      },
+      {
+        "location": "loading_bay",
+        "timestamp": "2024-12-23T07:05:29.563Z"
+      }
+    ]
+  }
+]
